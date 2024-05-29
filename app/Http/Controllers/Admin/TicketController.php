@@ -31,7 +31,8 @@ class TicketController extends Controller
         $categories = Category::all();
         $priorities = Priority::all();
         $operators = Operator::all();
-        return view('admin.tickets.create', compact('ticket', 'categories', 'priorities', 'operators'));
+        $statuses = Status::all();
+        return view('admin.tickets.create', compact('ticket', 'categories', 'priorities', 'operators', 'statuses'));
     }
 
     /**
@@ -40,7 +41,16 @@ class TicketController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $ticket = new Ticket($data);
+        $ticket = new Ticket;
+
+
+        // Verifica se la data è presente nei dati della richiesta, altrimenti assegna un valore di default (ad esempio, la data odierna)
+        if (!isset($data['date'])) {
+            $data['date'] = now()->toDateTimeString(); // Imposta la data odierna come valore di default
+        }
+
+        $ticket->fill($data);
+        // dd($data);
         $ticket->save();
         return redirect()->route('admin.tickets.show', $ticket);
     }
@@ -85,5 +95,4 @@ class TicketController extends Controller
     {
         // TODO
     }
-
 }

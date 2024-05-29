@@ -20,6 +20,9 @@ class Ticket extends Model
         'notes',
     ];
 
+    protected $dates = ['date'];
+
+
     /**
      * The category that belongs to the Ticket
      *
@@ -58,5 +61,14 @@ class Ticket extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            $ticket->date = $ticket->date ?? now();
+        });
     }
 }

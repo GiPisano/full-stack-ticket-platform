@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\HomeController as GuestHomeController;
 use App\Http\Controllers\Admin\OperatorController;
 use App\Http\Controllers\Admin\TicketController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +26,7 @@ Route::get('/', [GuestHomeController::class, 'home'])->name('home');
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function () {
     Route::get('/home', [AdminHomeController::class, 'home'])->name('home');
-    Route::resource('/tickets', TicketController::class );
+    Route::resource('/tickets', TicketController::class);
 });
 
 
